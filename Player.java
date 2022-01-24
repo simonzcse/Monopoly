@@ -1,3 +1,8 @@
+/**
+ * Name: Cheung King Hung
+ * ID: 21237379
+ * Session: 2
+ */
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
@@ -15,6 +20,12 @@ public class Player {
      */
     public Player(String name) {
         //TODO
+        this.name = name;
+        this.money = 10000;
+        this.position = Gameboard.HOME_POSITON;
+        this.lastMove = this.position;
+        this.inPark = false;
+        this.inJail = false;
     }
 
     /**
@@ -22,6 +33,21 @@ public class Player {
      */
     public void roll() {
         //TODO
+        if (isInJail()){
+            System.out.println(name + ", sorry you are in Jail. Skip one round.");
+            return;
+        }
+        inPark = !isInPark() && inPark;
+        int randomNum = ThreadLocalRandom.current().nextInt(1, 7);
+        lastMove = randomNum;
+        System.out.println(name + ", this is your turn. We roll for you");
+        System.out.println("It is..." + randomNum);
+        if (position + randomNum >= Gameboard.CELL_SIZE ) {
+              money += 2000;
+              position = position + randomNum - Gameboard.CELL_SIZE;
+        } else {
+               position += randomNum;
+        }
     }
     /**
      * Return true if the player is in Park 
@@ -30,6 +56,7 @@ public class Player {
      */
     public boolean isInPark() { 
         //TODO
+        return inPark;
     }
     /**
      * Set the player in a park. This will only be called when a player
@@ -39,6 +66,9 @@ public class Player {
      */
     public void setInPark(boolean inPark) { 
         //TODO
+        if (inPark){
+            this.inPark = true;
+        }
      }
     /**
      * Return true if the player is in Jail. It should return false
@@ -48,12 +78,15 @@ public class Player {
      */
     public boolean isInJail() { 
         //TODO
+        return inJail;
      }
     /**
      * Put the player into Jail directly without passing Home (i.e., no 2000)
      */
     public void putToJail() {
         //TODO
+        position = Gameboard.JAIL_POSITION;
+        inJail = true;
     }
 
     /**
@@ -62,7 +95,8 @@ public class Player {
      * @return the value of dice
      */
     public int getLastMove() { 
-        //TODO 
+        //TODO
+        return lastMove;
     }
     /**
      * Get the amount of money that the player has
@@ -71,6 +105,7 @@ public class Player {
      */
     public int getMoney() { 
         //TODO
+        return money;
      }
      /**
       * Return the name of the player
@@ -79,6 +114,7 @@ public class Player {
       */
     public String getName() { 
         //TODO
+        return name;
      }
      /**
       * return the current position of the player
@@ -87,6 +123,7 @@ public class Player {
       */
     public int getPosition() { 
         //TODO
+        return position;
      }
      /**
       * charge certain amount of dollar from the player.
@@ -95,7 +132,7 @@ public class Player {
       */
     public void charge(int money) { 
         //TODO
+        this.money -= money;
      }
-
      //TODO add some other private methods if necessary
 }
